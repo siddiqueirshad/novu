@@ -6,8 +6,22 @@ export class DurationUtils {
     }
 
     const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return false;
+    }
 
-    return !Number.isNaN(date.getTime());
+    const [yearStr, monthStr, dayStr] = value.split('T')[0].split('-');
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10);
+    const day = parseInt(dayStr, 10);
+
+    const utcDate = new Date(Date.UTC(year, month - 1, day));
+
+    return (
+      utcDate.getUTCFullYear() === year &&
+      utcDate.getUTCMonth() === month - 1 &&
+      utcDate.getUTCDate() === day
+    );
   }
 
   static convertToMilliseconds(amount: number, unit: string): number {
