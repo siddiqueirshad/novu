@@ -174,6 +174,15 @@ export function startOtel(serviceName: string, version: string): NodeSDK | undef
       getNodeAutoInstrumentations({
         '@opentelemetry/instrumentation-fs': { enabled: false },
         '@opentelemetry/instrumentation-dns': { enabled: false },
+        /*
+         * Router:
+         * In NestJS 11+, routing traverses more than 10 internal router layers,
+         * causing @opentelemetry/instrumentation-router to attach > 10 'finish'
+         * listeners to ServerResponse, triggering Node's MaxListenersExceededWarning
+         * on every HTTP response. Disabling the router instrumentation suppresses
+         * this noise while keeping HTTP and Express controller spans.
+         */
+        '@opentelemetry/instrumentation-router': { enabled: false },
 
         /*
          * MongoDB driver — produces spans with net.peer.name, db.system, etc.
