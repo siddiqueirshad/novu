@@ -29,7 +29,16 @@ export class FcmPushProvider extends PushBaseProvider implements IPushProvider {
   id = PushProviderIdEnum.FCM;
   protected casing: CasingEnum = CasingEnum.NONE;
 
-  private readonly INVALID_TOKEN_ERRORS = ['Requested entity was not found'];
+  private readonly INVALID_TOKEN_ERRORS = [
+    'Requested entity was not found',
+    'NotRegistered',
+    'registration-token-not-registered',
+    'messaging/registration-token-not-registered',
+    'messaging/invalid-registration-token',
+    'InvalidRegistration',
+    'Unregistered',
+    'The registration token is not a valid FCM registration token',
+  ];
 
   private appName: string;
   private messaging: Messaging;
