@@ -903,4 +903,24 @@ describe('FcmPushProvider', () => {
     });
     expect(sendSpy).not.toHaveBeenCalled();
   });
+describe('isTokenInvalid', () => {
+    test.each([
+      'Requested entity was not found',
+      'NotRegistered',
+      'registration-token-not-registered',
+      'messaging/registration-token-not-registered',
+      'messaging/invalid-registration-token',
+      'InvalidRegistration',
+      'Unregistered',
+      'The registration token is not a valid FCM registration token',
+    ])('should recognize %s as an invalid token error', (errorMsg) => {
+      expect(provider.isTokenInvalid(errorMsg)).toBe(true);
+      expect(provider.isTokenInvalid(`Sending message failed due to "${errorMsg}"`)).toBe(true);
+    });
+
+    test('should return false for unrelated errors', () => {
+      expect(provider.isTokenInvalid('Internal server error')).toBe(false);
+      expect(provider.isTokenInvalid('Quota exceeded')).toBe(false);
+    });
+  });
 });
